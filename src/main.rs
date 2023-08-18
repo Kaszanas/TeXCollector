@@ -15,7 +15,12 @@ fn main() {
     // Parse command-line arguments:
     let args = cli::Cli::parse();
     let main_file = &args.main_file;
-    log::info!("Main file set to: {}", main_file.to_string_lossy());
+    log::info!("Set LaTeX main file to: {}", main_file.to_string_lossy());
+    let output_path = &args.output_path;
+    log::info!(
+        "Set output path for the collected files to: {}",
+        output_path.to_string_lossy()
+    );
 
     // Parse the main .tex file.
     // TODO: Error handling!
