@@ -10,19 +10,19 @@ pub fn find_commands(file: PathBuf) -> Result<Vec<PathBuf>, io::Error> {
 
     // Open file, get lines:
     let lines = read_lines(file)?;
-
     let mut files_to_copy: Vec<PathBuf> = Vec::new();
 
-    // REVIEW: This looks and probably works like shit.
-    // REVIEW: Overall look at the complexity of this code.
-    // REVIEW: What is this Flutter?
     // Iterate over lines:
     for line in lines {
         if let Ok(line) = line {
             log::info!("got line {}", line);
             for command in commands {
                 match check_line(line.clone(), command) {
-                    Some(str_path) => files_to_copy.push(PathBuf::from(str_path)),
+                    Some(str_path) => {
+                        let path = PathBuf::from(str_path);
+                        let canon_path = path.canonicalize()?;
+                        files_to_copy.push(canon_path);
+                    }
                     None => {}
                 }
             }
