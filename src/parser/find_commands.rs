@@ -21,23 +21,42 @@ pub fn find_commands(file: PathBuf) -> Result<Vec<PathBuf>, io::Error> {
         if let Ok(line) = line {
             log::info!("got line {}", line);
             for command in commands {
-                if line.contains(command) {
-                    log::info!("line contains command");
-                    log::info!("Full line: {}", line);
-                    // REVIEW: Dafuq is that?
-                    if let Some(open) = line.find("{") {
-                        if let Some(close) = line.find("}") {
-                            let extracted_text = &line[open + 1..close];
-                            log::info!("Extracted text from line: {}", extracted_text);
-                            files_to_copy.push(PathBuf::from(extracted_text));
-                        }
-                    }
+                match check_line(line.clone(), command) {
+                    Some(str_path) => files_to_copy.push(PathBuf::from(str_path)),
+                    None => {}
                 }
             }
         }
     }
 
     Ok(files_to_copy)
+}
+
+// REVIEW: This looks bad, is there a better way to do this?
+fn check_line(line: String, command: &str) -> Option<String> {
+    match line.contains(command) {
+        true => {
+            log::info!("line contains command");
+            log::info!("Full line: {}", line);
+            find_brackets(line)
+        }
+        false => return None,
+    }
+}
+
+// REVIEW: Should this be more universal?
+fn find_brackets(line: String) -> Option<String> {
+    match line.find("{") {
+        Some(open) => match line.find("}") {
+            Some(close) => {
+                let extracted_text = &line[open + 1..close];
+                log::info!("Extracted text from line: {}", extracted_text);
+                return Some(extracted_text.to_owned());
+            }
+            _ => return None,
+        },
+        _ => return None,
+    }
 }
 
 // The output is wrapped in a Result to allow matching on errors
