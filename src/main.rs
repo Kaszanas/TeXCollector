@@ -5,7 +5,7 @@ mod parser;
 use clap::Parser;
 use simple_logger::SimpleLogger;
 
-use crate::parser::find_commands::find_commands;
+use crate::parser::{find_commands, utils};
 
 fn main() {
     SimpleLogger::new().init().unwrap();
@@ -24,6 +24,7 @@ fn main() {
 
     // Parse the main .tex file.
     // TODO: Error handling!
-    let files = find_commands(main_file.to_owned()).unwrap();
+
+    let files = find_commands::parser_pipeline(main_file.to_path_buf()).unwrap();
     log::info!("Got files {:#?}", files);
 }
