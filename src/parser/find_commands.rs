@@ -3,9 +3,9 @@ use std::{
     path::PathBuf,
 };
 
-use crate::parser::utils;
+use crate::parser::read_lines;
 
-// Finds commands and returns paths to the files that should be moved:
+/// Finds commands and returns paths to the files that should be moved:
 fn find_commands(
     lines: io::Lines<io::BufReader<std::fs::File>>,
     commands: Vec<&str>,
@@ -18,7 +18,7 @@ fn find_commands(
         if let Ok(line) = line {
             log::info!("got line {}", line);
             for command in commands.to_owned() {
-                match utils::check_line(line.clone(), command) {
+                match read_lines::check_line(line.clone(), command) {
                     Some(str_path) => {
                         let path = PathBuf::from(str_path);
                         let canon_path = path.canonicalize()?;
@@ -33,10 +33,11 @@ fn find_commands(
     Ok(files_to_copy)
 }
 
+/// Runs the parser pipeline
 pub fn parser_pipeline(file: PathBuf) -> Result<(), io::Error> {
     let commands = ["\\input"].to_vec();
 
-    let lines = match utils::read_lines(file) {
+    let lines = match read_lines::read_lines(file) {
         Ok(it) => it,
         Err(err) => return Err(err),
     };
