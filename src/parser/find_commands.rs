@@ -4,8 +4,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
+// Finds commands and returns paths to the files that should be moved:
 pub fn find_commands(file: PathBuf) -> Result<Vec<PathBuf>, io::Error> {
-    let commands: [&str; 1] = ["/input"];
+    let commands: [&str; 1] = ["\\input"];
 
     // Open file, get lines:
     let lines = read_lines(file)?;
@@ -18,15 +19,15 @@ pub fn find_commands(file: PathBuf) -> Result<Vec<PathBuf>, io::Error> {
     // Iterate over lines:
     for line in lines {
         if let Ok(line) = line {
-            log::info!("got line");
+            log::info!("got line {}", line);
             for command in commands {
                 if line.contains(command) {
                     log::info!("line contains command");
                     log::info!("Full line: {}", line);
                     // REVIEW: Dafuq is that?
-                    if let Some(open) = command.find("{") {
-                        if let Some(close) = command.find("}") {
-                            let extracted_text = &command[open + 1..close];
+                    if let Some(open) = line.find("{") {
+                        if let Some(close) = line.find("}") {
+                            let extracted_text = &line[open + 1..close];
                             log::info!("Extracted text from line: {}", extracted_text);
                             files_to_copy.push(PathBuf::from(extracted_text));
                         }
