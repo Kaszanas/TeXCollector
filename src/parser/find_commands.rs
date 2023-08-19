@@ -3,7 +3,7 @@ use std::{
     path::PathBuf,
 };
 
-use crate::parser::read_lines;
+use crate::parser::{check_line::check_line, read_lines};
 
 /// Finds commands and returns paths to the files that should be moved:
 fn find_commands(
@@ -18,7 +18,7 @@ fn find_commands(
         if let Ok(line) = line {
             log::info!("got line {}", line);
             for command in commands.to_owned() {
-                match read_lines::check_line(line.clone(), command) {
+                match check_line(line.clone(), command) {
                     Some(str_path) => {
                         let path = PathBuf::from(str_path);
                         let canon_path = path.canonicalize()?;

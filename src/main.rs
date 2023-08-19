@@ -1,11 +1,6 @@
-mod cli;
-mod files;
-mod parser;
-
 use clap::Parser;
 use simple_logger::SimpleLogger;
-
-use crate::parser::{find_commands, read_lines};
+use texcollector::{cli, parser::find_commands};
 
 fn main() {
     SimpleLogger::new().init().unwrap();
