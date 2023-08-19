@@ -5,7 +5,7 @@ use std::{
 
 use crate::parser::{check_line::check_line, read_lines};
 
-/// Finds commands and returns paths to the files that should be moved:
+/// Finds commands and returns paths to the files that should be moved.
 fn find_commands(
     lines: io::Lines<io::BufReader<std::fs::File>>,
     commands: Vec<&str>,
@@ -42,7 +42,7 @@ pub fn parser_pipeline(file: PathBuf) -> Result<(), io::Error> {
         Err(err) => return Err(err),
     };
 
-    find_commands(lines, commands);
+    let _ = find_commands(lines, commands);
 
     Ok(())
 }

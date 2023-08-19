@@ -14,7 +14,10 @@ pub struct Cli {
     #[arg(short, long, default_value = "./output")]
     pub output_path: PathBuf,
 
-    /// files can either be copied, or their contents can be replaced in-place [default: false].
+    /// Files can either be copied to the output directory
+    /// and the paths in the command will be adjusted,
+    /// or their contents can be replaced in-place where applicable
+    /// [default: false].
     #[arg(short, long, default_value_t = false)]
-    pub copy: bool,
+    pub replace_commands: bool,
 }
