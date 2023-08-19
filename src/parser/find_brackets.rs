@@ -5,8 +5,10 @@
 /// # Examples
 ///
 /// ```
-/// let content = "this is a {get_this_enclosed_content} test".to_string()
-/// if let Some(find_brackets(content)) = found_content {
+/// use texcollector::parser::find_brackets::find_brackets;
+///
+/// let content = "this is a {get_this_enclosed_content} test".to_string();
+/// if let Some(found_content) = find_brackets(content) {
 ///     println!("Got: {}", found_content)
 /// }
 /// ```
