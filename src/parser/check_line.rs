@@ -19,7 +19,7 @@ pub fn check_line(line: String, command: &str) -> Option<String> {
         true => {
             log::info!("line contains command");
             log::info!("Full line: {}", line);
-            find_brackets(line)
+            Some(line)
         }
         false => return None,
     }

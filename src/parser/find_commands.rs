@@ -9,20 +9,18 @@ use crate::parser::{check_line::check_line, commands::COMMANDS, read_lines};
 fn find_commands(
     lines: io::Lines<io::BufReader<std::fs::File>>,
     commands: &[&'static str],
-) -> Result<Vec<PathBuf>, io::Error> {
-    // Open file, get lines:
-    let mut files_to_copy: Vec<PathBuf> = Vec::new();
+) -> Result<Vec<(usize, String)>, io::Error> {
+    // Initializing empty vector to populate with results:
+    let mut lines_commands: Vec<(usize, String)> = Vec::new();
 
-    // Iterate over lines:
-    for line in lines {
+    // Iterate over lines, find the commands and their line numbers:
+    for (index, line) in lines.enumerate() {
         if let Ok(line) = line {
             log::info!("got line {}", line);
             for command in commands.to_owned() {
                 match check_line(line.clone(), command) {
-                    Some(str_path) => {
-                        let path = PathBuf::from(str_path);
-                        let canon_path = path.canonicalize()?;
-                        files_to_copy.push(canon_path);
+                    Some(found_line) => {
+                        lines_commands.push((index, found_line));
                     }
                     None => {}
                 }
@@ -30,17 +28,22 @@ fn find_commands(
         }
     }
 
-    Ok(files_to_copy)
+    Ok(lines_commands)
 }
 
 /// Runs the parser pipeline
 pub fn parser_pipeline(file: PathBuf) -> Result<(), io::Error> {
+    // Open the file and get the lines:
     let lines = match read_lines::read_lines(file) {
         Ok(it) => it,
         Err(err) => return Err(err),
     };
 
-    let _ = find_commands(lines, &COMMANDS);
+    // Find commands and their line numbers:
+    let found_commands = match find_commands(lines, &COMMANDS) {
+        Ok(commands) => commands,
+        Err(err) => return Err(err),
+    };
 
     Ok(())
 }
