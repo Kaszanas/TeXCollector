@@ -7,7 +7,7 @@ use clap::Parser;
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
     /// Path to the .tex file that will be collected.
-    #[arg(short, long, default_value = "./files/input/main.tex")]
+    #[arg(short, long, default_value = "./files/input/pre_print/main.tex")]
     pub main_file: PathBuf,
 
     /// Output path where the final collected .tex file will be placed.
@@ -19,5 +19,5 @@ pub struct Cli {
     /// or their contents can be replaced in-place where applicable
     /// [default: false].
     #[arg(short, long, default_value_t = false)]
-    pub replace_commands: bool,
+    pub replace_input: bool,
 }

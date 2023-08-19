@@ -16,7 +16,7 @@ fn main() {
         "Set output path for the collected files to: {}",
         output_path.to_string_lossy()
     );
-    let replace_files = &args.replace_commands;
+    let replace_input = &args.replace_input;
 
     // Parse the main .tex file.
     // TODO: Error handling!

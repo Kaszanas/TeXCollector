@@ -1,4 +1,5 @@
 use std::{
+    collections::HashMap,
     io::{self},
     path::PathBuf,
 };
@@ -32,22 +33,38 @@ fn find_commands(
 }
 
 /// Runs the parser pipeline
-pub fn parser_pipeline(file: PathBuf) -> Result<(), io::Error> {
+pub fn parser_pipeline(file: PathBuf, replace_input: bool) -> Result<(), io::Error> {
     // Open the file and get the lines:
     let lines = match read_lines::read_lines(file) {
         Ok(it) => it,
         Err(err) => return Err(err),
     };
 
-    // Find commands and their line numbers:
-    let found_commands = match find_commands(lines, &COMMANDS) {
-        Ok(commands) => commands,
-        Err(err) => return Err(err),
-    };
+    // TODO: Hash the lines for faster lookup and replacement:
+    let hashed_lines = read_lines::hash_lines(lines);
+
+    // // Find commands and their line numbers:
+    // let found_commands = match find_commands(lines, &COMMANDS) {
+    //     Ok(commands) => commands,
+    //     Err(err) => return Err(err),
+    // };
+
+    // // TODO: if command is of type input, then you can either replace
+    // // the whole line with the content of the file.
+    // // Or you can replace it with flattened path to the file.
+    // replace_content(&lines, found_commands, replace_input);
 
     Ok(())
 }
 
-pub fn replace_content(lines: io::Lines<io::BufReader<std::fs::File>>) {
-    todo!()
+fn replace_content(
+    hashed_lines: HashMap<usize, String>,
+    found_commands: HashMap<usize, String>,
+    replace_input: bool,
+) -> Result<(), io::Error> {
+    for (index, command) in found_commands {
+        todo!()
+    }
+
+    Ok(())
 }
