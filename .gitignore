@@ -2,3 +2,20 @@
 
 
 .vscode
+
+*.dep
+
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.spl
+*.synctex.gz
+*.pdf
+
+*.brf
+
+*.dvi

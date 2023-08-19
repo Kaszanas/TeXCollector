@@ -1,0 +1,120 @@
+\documentclass{article}
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[breaklinks,backref=page,hidelinks]{hyperref}
+
+
+\renewcommand*{\backreflastsep}{, }
+\renewcommand*{\backreftwosep}{, }
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+  \ifcase #1 %
+    No citations.% use \relax if you do not want the "No citations" message
+  \or
+(Cited on page: #4).%
+  \else
+(Cited on pages: #4).%
+  \fi%
+}
+
+
+% \usepackage[hidelinks]{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}		% Can be removed after putting your text content
+\usepackage{graphicx}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{doi}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{lineno}
+\usepackage{xcolor}
+
+
+\usepackage{cleveref}
+
+% Wrapping figures in text:
+\usepackage{wrapfig}
+
+% Bulk the authors together:
+\usepackage{authblk}
+
+% Center captions in wrapfigure:
+\usepackage[justification=centering]{caption}
+
+% In text enumeration:
+\usepackage[inline]{enumitem}
+
+% Checkmarks:
+\usepackage{bbding}
+
+% Footnotes in tables:
+\usepackage[flushleft]{threeparttable}
+
+% Scaling listings
+\usepackage{adjustbox}
+
+% Code listings in Latex:
+\usepackage{listings}
+
+
+\title{\input{../title.tex}}
+
+\date{July 28, 2022}	% Here you can change the date presented in the paper title
+%\date{} 					% Or removing it
+
+
+\makeatletter
+\newcommand\email[2][]%
+   {\newaffiltrue\let\AB@blk@and\AB@pand
+      \if\relax#1\relax\def\AB@note{\AB@thenote}\else\def\AB@note{\relax}%
+        \setcounter{Maxaffil}{0}\fi
+      \begingroup
+        \let\protect\@unexpandable@protect
+        \def\thanks{\protect\thanks}\def\footnote{\protect\footnote}%
+        \@temptokena=\expandafter{\AB@authors}%
+        {\def\\{\protect\\\protect\Affilfont}\xdef\AB@temp{#2}}%
+         \xdef\AB@authors{\the\@temptokena\AB@las\AB@au@str
+         \protect\\[\affilsep]\protect\Affilfont\AB@temp}%
+         \gdef\AB@las{}\gdef\AB@au@str{}%
+        {\def\\{, \ignorespaces}\xdef\AB@temp{#2}}%
+        \@temptokena=\expandafter{\AB@affillist}%
+        \xdef\AB@affillist{\the\@temptokena \AB@affilsep
+          \AB@affilnote{}\protect\Affilfont\AB@temp}%
+      \endgroup
+       \let\AB@affilsep\AB@affilsepx
+}
+\makeatother
+
+% Removes AND before the last author:
+\renewcommand\Authands{, }
+
+\author[1]{\textbf{Kaszanas}\textsuperscript{*,}} 
+\affil[1]{Some Institution}
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+
+  \input{../0_abstract.tex}
+
+\end{abstract}
+
+% keywords can be removed
+\keywords{key0 \and key1\and key2}
+
+\input{../1_introduction.tex}
+
+\bibliographystyle{IEEEtran}
+\bibliography{../sources.bib}
+
+\end{document}
