@@ -6,7 +6,7 @@ use std::{
 };
 
 use crate::parser::commands::COMMANDS;
-use crate::parser::{check_line::check_line, read_lines};
+use crate::parser::read_lines;
 
 /// Finds commands and returns paths to the files that should be moved.
 fn find_commands(

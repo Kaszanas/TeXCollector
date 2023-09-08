@@ -11,13 +11,14 @@
 /// ```
 /// use texcollector::parser::find_brackets::find_brackets;
 ///
-/// let content = "this is a {get_this_enclosed_content} test".to_string();
+/// let content = "this is a {get_this_enclosed_content} test";
 /// if let Some(found_content) = find_brackets(content) {
 ///     println!("Got: {}", found_content)
 /// }
 /// ```
 pub fn find_brackets(line: &str) -> Option<&str> {
     let open = line.find("{")?;
+    log::debug!("Found open parentheses at index {}", open);
 
     // Reversing the line and finding first parentheses:
     let line_len = line.len();
@@ -25,7 +26,9 @@ pub fn find_brackets(line: &str) -> Option<&str> {
 
     // Getting the index from the right side for the closing parentheses:
     let close = line_len - reversed_line.find("}")?;
+    log::debug!("Found close parentheses at index {}", close);
     let extracted_text = &line[open + 1..close];
 
+    log::info!("Extracted content {}", extracted_text);
     Some(extracted_text)
 }
