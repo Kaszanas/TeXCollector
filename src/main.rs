@@ -20,7 +20,6 @@ fn main() {
 
     // Parse the main .tex file.
     // TODO: Error handling!
-
-    let files = find_commands::parser_pipeline(main_file.to_path_buf()).unwrap();
+    let files = find_commands::parser_pipeline(main_file.to_path_buf(), *replace_input).unwrap();
     log::info!("Got files {:#?}", files);
 }
