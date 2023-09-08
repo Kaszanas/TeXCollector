@@ -1,5 +1,3 @@
-use crate::parser::find_brackets::find_brackets;
-
 // REVIEW: This looks bad, is there a better way to do this?
 /// Checks a line in search for a specific command substring.
 ///
@@ -14,7 +12,7 @@ use crate::parser::find_brackets::find_brackets;
 ///     println!("Got command content: {}", found_command_content);
 /// }
 /// ```
-pub fn check_line(line: String, command: &str) -> Option<String> {
+pub fn check_line<'a>(line: &'a str, command: &str) -> Option<&'a str> {
     match line.contains(command) {
         true => {
             log::info!("line contains command");
