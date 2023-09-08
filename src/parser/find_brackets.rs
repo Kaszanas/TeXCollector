@@ -20,10 +20,9 @@ pub fn find_brackets(line: &str) -> Option<&str> {
     let open = line.find("{")?;
     log::debug!("Found open parentheses at index {}", open);
 
-    // Reversing the line and finding first parentheses:
+    // Reversing the line and finding first closing parentheses:
     let line_len = line.len();
     let reversed_line: String = line.chars().rev().collect();
-
     // Getting the index from the right side for the closing parentheses:
     let close = line_len - reversed_line.find("}")?;
     log::debug!("Found close parentheses at index {}", close);
