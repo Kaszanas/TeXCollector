@@ -1,7 +1,9 @@
 /target
 
 
-.vscode
+/.vscode
+/venv*
+
 
 *.dep
 
@@ -20,5 +22,12 @@
 
 *.dvi
 
-venv/
 poetry.lock
+
+*.egg-info
+
+__pycache__
+
+build/
+
+reference/
