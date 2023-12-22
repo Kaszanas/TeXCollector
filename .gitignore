@@ -19,3 +19,6 @@
 *.brf
 
 *.dvi
+
+venv/
+poetry.lock
