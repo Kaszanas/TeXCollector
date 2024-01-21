@@ -5,7 +5,7 @@ use clap::Parser;
 /// Defines the command line arguments for the TeXCollector
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
-pub struct Cli {
+pub struct CLIArguments {
     /// Path to the .tex file that will be collected.
     #[arg(short, long, default_value = "./files/input/pre_print/main.tex")]
     pub main_file: PathBuf,
