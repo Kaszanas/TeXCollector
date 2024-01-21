@@ -7,11 +7,11 @@ use clap::Parser;
 #[command(author, version, about, long_about = None)]
 pub struct CLIArguments {
     /// Path to the .tex file that will be collected.
-    #[arg(short, long, default_value = "./files/input/pre_print/main.tex")]
+    #[arg(short, long)]
     pub main_file: PathBuf,
 
     /// Output path where the final collected .tex file will be placed.
-    #[arg(short, long, default_value = "./files/output")]
+    #[arg(short, long)]
     pub output_path: PathBuf,
 
     /// Files can either be copied to the output directory
