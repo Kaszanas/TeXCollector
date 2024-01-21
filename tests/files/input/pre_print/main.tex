@@ -65,7 +65,7 @@
 \usepackage{listings}
 
 
-\title{\input{../title.tex}}
+\title{\input{../title.tex} \input{../title.tex}}
 
 \date{July 28, 2022}	% Here you can change the date presented in the paper title
 %\date{} 					% Or removing it
@@ -112,7 +112,23 @@
 % keywords can be removed
 \keywords{key0 \and key1\and key2}
 
-\input{../1_introduction.tex}
+% Two commands in one line:
+\input{../1_introduction.tex} \input{../2_sample_content.tex}
+
+
+\input{
+  ../0_abstract.tex
+}
+
+\input % { siemano.txt }
+{ ../1_introduction.tex  }
+
+% \input{ siemano.txt }
+\input % { siemano.txt }
+{ ../0_abstract.tex }
+
+\input{ %  siemano.txt }
+  ../0_abstract.tex }
 
 \bibliographystyle{IEEEtran}
 \bibliography{../sources.bib}
