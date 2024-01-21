@@ -1,3 +1,3 @@
 # TeXCollector
 
-Utility for collectin LaTeX article source.
+Utility for collecting LaTeX article source.
