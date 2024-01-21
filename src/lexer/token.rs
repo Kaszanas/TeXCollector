@@ -1,4 +1,4 @@
-use logos::{Lexer, Logos};
+use logos::{Lexer, Logos, Span};
 use strum_macros::EnumDiscriminants;
 
 #[derive(Clone, Debug, Logos, PartialEq, Eq, EnumDiscriminants, clap::ValueEnum)]
@@ -42,7 +42,19 @@ pub enum Token {
     #[regex(r"\\[^a-zA-Z]")]
     InvalidCommand,
 
+    /// Special escaped character `'\x'` that should be interpreted as `'x'`.
+    #[token(r"\{")]
+    #[token(r"\}")]
+    #[token(r"\_")]
+    #[token(r"\$")]
+    #[token(r"\&")]
+    #[token(r"\%")]
+    #[token(r"\#")]
+    EscapedChar,
+
     /// A comment, matching anyway after a non-escaped percent-sign `'%'` is encountered.
     #[regex("%.*")]
     Comment,
 }
+
+pub type SpannedToken<'source> = (Token, Span);
