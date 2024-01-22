@@ -24,6 +24,11 @@ pub enum Token {
     #[token(r"\input")]
     InputCommand,
 
+    /// Input command, matching regex "\input".
+    /// This is a command that includes another file.
+    #[token(r"\bibliography")]
+    BibliographyCommand,
+
     /// Use package command matching "\usepackage".
     #[token(r"\usepackage")]
     UsePackage,
@@ -37,10 +42,20 @@ pub enum Token {
     #[regex(r"\\[a-zA-Z]+")]
     CommandName,
 
+    /// Indicates an ASCII-letters only word
+    /// matching regex `"[a-zA-Z]+"`.
+    #[regex("[a-zA-Z./\\d]+")]
+    CommandContent,
+
     /// Indicates an invalid command name, that should match everything
     /// escaped sequence that has invalid syntax.
     #[regex(r"\\[^a-zA-Z]")]
     InvalidCommand,
+
+    /// Indicates a newline, either with `'\n'` or `"\r\n"`.
+    #[token("\n")]
+    #[token("\r\n")]
+    Newline,
 
     /// Special escaped character `'\x'` that should be interpreted as `'x'`.
     #[token(r"\{")]
@@ -57,4 +72,4 @@ pub enum Token {
     Comment,
 }
 
-pub type SpannedToken<'source> = (Token, Span);
+pub type SpannedToken = (Token, Span);

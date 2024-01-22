@@ -9,67 +9,23 @@
 
 
 \renewcommand*{\backreflastsep}{, }
-\renewcommand*{\backreftwosep}{, }
-\renewcommand*{\backref}[1]{}
-\renewcommand*{\backrefalt}[4]{%
-  \ifcase #1 %
-    No citations.% use \relax if you do not want the "No citations" message
-  \or
-(Cited on page: #4).%
-  \else
-(Cited on pages: #4).%
-  \fi%
-}
-
-
-% \usepackage[hidelinks]{hyperref}       % hyperlinks
 \usepackage{url}            % simple URL typesetting
 \usepackage{booktabs}       % professional-quality tables
-\usepackage{amsfonts}       % blackboard math symbols
-\usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
-\usepackage{lipsum}		% Can be removed after putting your text content
 \usepackage{graphicx}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{doi}
-\usepackage{float}
-\usepackage{multirow}
-\usepackage{lineno}
-\usepackage{xcolor}
-
-
-\usepackage{cleveref}
-
-% Wrapping figures in text:
-\usepackage{wrapfig}
-
-% Bulk the authors together:
 \usepackage{authblk}
 
-% Center captions in wrapfigure:
-\usepackage[justification=centering]{caption}
-
-% In text enumeration:
-\usepackage[inline]{enumitem}
-
-% Checkmarks:
-\usepackage{bbding}
+\usepackage{cleveref}
 
 % Footnotes in tables:
 \usepackage[flushleft]{threeparttable}
 
-% Scaling listings
-\usepackage{adjustbox}
-
-% Code listings in Latex:
-\usepackage{listings}
-
 
 \title{\input{../title.tex} \input{../title.tex}}
 
-\date{July 28, 2022}	% Here you can change the date presented in the paper title
-%\date{} 					% Or removing it
-
+\date{July 28, 2022}	% Date
 
 \makeatletter
 \newcommand\email[2][]%
@@ -93,8 +49,6 @@
 }
 \makeatother
 
-% Removes AND before the last author:
-\renewcommand\Authands{, }
 
 \author[1]{\textbf{Kaszanas}\textsuperscript{*,}} 
 \affil[1]{Some Institution}
