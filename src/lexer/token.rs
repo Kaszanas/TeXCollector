@@ -19,33 +19,10 @@ pub enum Token {
     #[token("[")]
     BracketOpen,
 
-    /// Input command, matching regex "\input".
-    /// This is a command that includes another file.
-    #[token(r"\input")]
-    InputCommand,
-
-    /// Input command, matching regex "\input".
-    /// This is a command that includes another file.
-    #[token(r"\bibliography")]
-    BibliographyCommand,
-
-    /// Use package command matching "\usepackage".
-    #[token(r"\usepackage")]
-    UsePackage,
-
-    /// Command for including a graphic in the final output file.
-    #[token(r"\includegraphics")]
-    IncludeGraphics,
-
     /// A valid command name, including leading backslash `\`,
     /// matching regex `r"\\[a-zA-Z]+"`.
     #[regex(r"\\[a-zA-Z]+")]
     CommandName,
-
-    /// Indicates an ASCII-letters only word
-    /// matching regex `"[a-zA-Z]+"`.
-    #[regex("[a-zA-Z./\\d]+")]
-    CommandContent,
 
     /// Indicates an invalid command name, that should match everything
     /// escaped sequence that has invalid syntax.
@@ -56,6 +33,42 @@ pub enum Token {
     #[token("\n")]
     #[token("\r\n")]
     Newline,
+
+    #[regex(r"[ \t]+")]
+    WhitespaceOrTab,
+
+    /// Comma `'.'` character.
+    #[token(".")]
+    Dot,
+
+    /// Colon `':'` character.
+    #[token(":")]
+    Colon,
+
+    /// Comma `','` character.
+    #[token(",")]
+    Comma,
+
+    /// Double-or-escaped backslash `"\\"`.
+    #[token(r"\\")]
+    DoubleBackslash,
+
+    /// Double-or-escaped backslash `"\\"`.
+    #[token(r"/")]
+    ForwardSlash,
+
+    /// Underscore `'_'` character.
+    #[token("_")]
+    Underscore,
+
+    /// Indicates a valid number matching `"[0-9]+"`.
+    #[regex("[0-9]+")]
+    Number,
+
+    /// Indicates an ASCII-letters only word
+    /// matching regex `"[a-zA-Z]+"`.
+    #[regex("[a-zA-Z]+")]
+    Word,
 
     /// Special escaped character `'\x'` that should be interpreted as `'x'`.
     #[token(r"\{")]

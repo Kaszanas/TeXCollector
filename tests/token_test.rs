@@ -2,8 +2,16 @@ use logos::Logos;
 use texcollector::lexer::token::Token;
 
 #[test]
+fn token_test_input_command() {
+    let source = r"input{blah}";
+
+    let source = r"\title{\input{blah} \input{blah}}";
+}
+
+#[test]
 fn token_test_document() {
     let source = r#"
+
     \documentclass{article}
     \usepackage{arxiv}
 
@@ -63,7 +71,4 @@ fn token_test_document() {
             }
         }
     }
-
-    // assert_eq!(lexer.next(), Some(Ok(Token::Newline)));
-    // println!("Got {:?} token", lexer.next());
 }
