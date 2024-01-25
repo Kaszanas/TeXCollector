@@ -1,11 +1,70 @@
+use std::ops::Range;
+
 use logos::Logos;
 use texcollector::lexer::token::Token;
 
+macro_rules! assert_token_positions {
+    ($source:expr, $token:pat, $($pos:expr),+ $(,)?) => {
+        let source = $source;
+
+        let positions: Vec<std::ops::Range<usize>> = vec![$($pos),*];
+        let spanned_token: Vec<_> = Token::lexer(source)
+            .spanned()
+            .filter(|(token, _)| matches!(token, $token))
+            .collect();
+
+
+        let strs: Vec<_> = Token::lexer(source)
+            .spanned()
+            .map(|(token, span)| (token, source[span].to_string()))
+            .collect();
+
+        assert_eq!(
+            spanned_token.len(), positions.len(),
+            "The number of tokens found did not match the expected number of positions {strs:?}"
+        );
+
+        for (pos, (token, span)) in positions.into_iter().zip(spanned_token) {
+            assert_eq!(
+                pos,
+                span,
+                "Token {token:#?} was found, but expected at {pos:?}"
+            );
+        }
+    };
+}
+
 #[test]
 fn token_test_input_command() {
+    // Just a word resembling an input command name and a word enclosed in braces:
     let source = r"input{blah}";
+    assert_token_positions!(source, Ok(Token::BraceOpen), 5..6);
+    assert_token_positions!(source, Ok(Token::Word), 0..5, 6..10);
+    assert_token_positions!(source, Ok(Token::BraceClose), 10..11);
 
+    // Title command with two inputs:
     let source = r"\title{\input{blah} \input{blah}}";
+    assert_token_positions!(source, Ok(Token::WhitespaceOrTab), 19..20);
+    assert_token_positions!(source, Ok(Token::BraceOpen), 6..7, 13..14, 26..27);
+    assert_token_positions!(source, Ok(Token::BraceClose), 18..19, 31..32, 32..33);
+    assert_token_positions!(source, Ok(Token::CommandName), 0..6, 7..13, 20..26);
+    assert_token_positions!(source, Ok(Token::Word), 14..18, 27..31);
+}
+
+#[test]
+fn token_test_utf_8_word() {
+    let source = "ł";
+    // The range resembles the byte range of the character in the source string:
+    assert_token_positions!(source, Ok(Token::Word), 0..2);
+}
+
+#[test]
+fn token_test_usepackage_command() {
+    let source = r"\usepackage{arxiv}";
+    assert_token_positions!(source, Ok(Token::BraceOpen), 11..12);
+    assert_token_positions!(source, Ok(Token::BraceClose), 17..18);
+    assert_token_positions!(source, Ok(Token::CommandName), 0..11);
+    assert_token_positions!(source, Ok(Token::Word), 12..17);
 }
 
 #[test]

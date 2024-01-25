@@ -1,8 +1,11 @@
-use logos::{Lexer, Logos, Span};
+use logos::{Logos, Span};
 use strum_macros::EnumDiscriminants;
 
 #[derive(Clone, Debug, Logos, PartialEq, Eq, EnumDiscriminants, clap::ValueEnum)]
 pub enum Token {
+    #[token("*")]
+    Asterix,
+
     /// Left curly brace `'{'` character.
     #[token("{")]
     BraceOpen,
@@ -67,7 +70,7 @@ pub enum Token {
 
     /// Indicates an ASCII-letters only word
     /// matching regex `"[a-zA-Z]+"`.
-    #[regex("[a-zA-Z]+")]
+    #[regex(r"\p{L}+")]
     Word,
 
     /// Special escaped character `'\x'` that should be interpreted as `'x'`.
