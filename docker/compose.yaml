@@ -6,5 +6,23 @@
 services:
   app:
     build:
-      context: ../
-      target: final
+      dockerfile: './docker/Dockerfile'
+      context: '../'
+
+  dev:
+    build:
+      dockerfile: './docker/Dockerfile.dev'
+      context: '../'
+
+  test:
+    build:
+      dockerfile: './docker/Dockerfile.dev'
+      context: '../'
+    command:
+      [
+        "cargo",
+        "test",
+        "--",
+        "--nocapture",
+        "2>&1 | tee /app/logs/test_output.log"
+      ]

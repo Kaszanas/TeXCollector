@@ -51,8 +51,9 @@ RUN adduser \
     appuser
 USER appuser
 
-# Copy the executable from the "build" stage.
-COPY --from=build /bin/server /bin/
+# TODO: Expose the correct built binary:
+# # Copy the executable from the "build" stage.
+# COPY --from=build /bin/server /bin/
 
-# What the container should run when it is started.
-CMD ["/bin/server"]
+# # What the container should run when it is started.
+# CMD ["/bin/server"]
