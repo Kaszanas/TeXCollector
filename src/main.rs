@@ -1,6 +1,6 @@
 use clap::Parser;
 use simple_logger::SimpleLogger;
-use texcollector::cli;
+use texcollector::{cli, lexer, parser};
 
 fn main() {
     SimpleLogger::new().init().unwrap();

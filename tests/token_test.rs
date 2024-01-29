@@ -1,5 +1,3 @@
-use std::ops::Range;
-
 use logos::Logos;
 use texcollector::lexer::token::Token;
 
@@ -68,6 +66,82 @@ fn token_test_usepackage_command() {
 }
 
 #[test]
+fn test_single_tokens() {
+    let tk = "*";
+    assert_token_positions!(tk, Ok(Token::Asterix), 0..1);
+
+    let tk = "{";
+    assert_token_positions!(tk, Ok(Token::BraceOpen), 0..1);
+
+    let tk = "}";
+    assert_token_positions!(tk, Ok(Token::BraceClose), 0..1);
+
+    let tk = "[";
+    assert_token_positions!(tk, Ok(Token::BracketOpen), 0..1);
+
+    let tk = "]";
+    assert_token_positions!(tk, Ok(Token::BracketOpen), 0..1);
+
+    let tk = "word";
+    assert_token_positions!(tk, Ok(Token::Word), 0..4);
+
+    let tk = r"\t{}";
+    assert_token_positions!(tk, Ok(Token::CommandName), 0..2);
+
+    let tk = r#"
+    "#;
+    assert_token_positions!(tk, Ok(Token::Newline), 0..2);
+
+    let tk = r"	";
+    assert_token_positions!(tk, Ok(Token::WhitespaceOrTab), 0..1);
+
+    let tk = r" ";
+    assert_token_positions!(tk, Ok(Token::WhitespaceOrTab), 0..1);
+
+    let tk = r".";
+    assert_token_positions!(tk, Ok(Token::Dot), 0..1);
+
+    let tk = r":";
+    assert_token_positions!(tk, Ok(Token::Colon), 0..1);
+
+    let tk = r",";
+    assert_token_positions!(tk, Ok(Token::Comma), 0..1);
+
+    let tk = r"\\";
+    assert_token_positions!(tk, Ok(Token::DoubleBackslash), 0..2);
+
+    let tk = r"/";
+    assert_token_positions!(tk, Ok(Token::ForwardSlash), 0..1);
+
+    let tk = r"_";
+    assert_token_positions!(tk, Ok(Token::Underscore), 0..1);
+
+    let tk = r"1";
+    assert_token_positions!(tk, Ok(Token::Number), 0..1);
+
+    let tk = r"\{";
+    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+
+    let tk = r"\}";
+    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+
+    let tk = r"\_";
+    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+
+    let tk = r"\$";
+    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+
+    let tk = r"\&";
+    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+
+    let tk = r"\%";
+    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+
+    let tk = r"\#";
+    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+}
+
+#[test]
 fn token_test_document() {
     let source = r#"
 
@@ -120,13 +194,14 @@ fn token_test_document() {
                 );
             }
             Err(err) => {
-                eprintln!(
+                let message = format!(
                     "Error: {:?}, range {:?}, maps to {}",
                     err,
                     _range.clone(),
                     source[_range].to_string()
                 );
-                // Handle the error as needed
+
+                assert!(false, "{}", message)
             }
         }
     }
