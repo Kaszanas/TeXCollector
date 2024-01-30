@@ -45,7 +45,7 @@ fn token_test_input_command() {
     assert_token_positions!(source, Ok(Token::WhitespaceOrTab), 19..20);
     assert_token_positions!(source, Ok(Token::BraceOpen), 6..7, 13..14, 26..27);
     assert_token_positions!(source, Ok(Token::BraceClose), 18..19, 31..32, 32..33);
-    assert_token_positions!(source, Ok(Token::CommandName), 0..6, 7..13, 20..26);
+    assert_token_positions!(source, Ok(Token::CommandName(_)), 0..6, 7..13, 20..26);
     assert_token_positions!(source, Ok(Token::Word), 14..18, 27..31);
 }
 
@@ -59,85 +59,47 @@ fn token_test_utf_8_word() {
 #[test]
 fn token_test_usepackage_command() {
     let source = r"\usepackage{arxiv}";
+    let command_name = String::from(r"\usepackage");
     assert_token_positions!(source, Ok(Token::BraceOpen), 11..12);
     assert_token_positions!(source, Ok(Token::BraceClose), 17..18);
-    assert_token_positions!(source, Ok(Token::CommandName), 0..11);
+    assert_token_positions!(source, Ok(Token::CommandName(command_name)), 0..11);
     assert_token_positions!(source, Ok(Token::Word), 12..17);
 }
 
 #[test]
 fn test_single_tokens() {
-    let tk = "*";
-    assert_token_positions!(tk, Ok(Token::Asterix), 0..1);
+    let command_name = String::from(r"\t");
 
-    let tk = "{";
-    assert_token_positions!(tk, Ok(Token::BraceOpen), 0..1);
+    let test_cases = vec![
+        ("*", Token::Asterix, 0..1),
+        ("{", Token::BraceOpen, 0..1),
+        ("}", Token::BraceClose, 0..1),
+        ("[", Token::BracketOpen, 0..1),
+        ("]", Token::BracketClose, 0..1),
+        ("word", Token::Word, 0..4),
+        (r"\t", Token::CommandName(command_name), 0..2),
+        ("\n", Token::Newline, 0..1),
+        (r"	", Token::WhitespaceOrTab, 0..1),
+        (r" ", Token::WhitespaceOrTab, 0..1),
+        (r".", Token::Dot, 0..1),
+        (r":", Token::Colon, 0..1),
+        (r",", Token::Comma, 0..1),
+        (r"\\", Token::DoubleBackslash, 0..2),
+        (r"/", Token::ForwardSlash, 0..1),
+        (r"_", Token::Underscore, 0..1),
+        (r"1", Token::Number, 0..1),
+        (r"\{", Token::EscapedChar, 0..2),
+        (r"\}", Token::EscapedChar, 0..2),
+        (r"\_", Token::EscapedChar, 0..2),
+        (r"\$", Token::EscapedChar, 0..2),
+        (r"\&", Token::EscapedChar, 0..2),
+        (r"\%", Token::EscapedChar, 0..2),
+        (r"\#", Token::EscapedChar, 0..2),
+    ];
 
-    let tk = "}";
-    assert_token_positions!(tk, Ok(Token::BraceClose), 0..1);
-
-    let tk = "[";
-    assert_token_positions!(tk, Ok(Token::BracketOpen), 0..1);
-
-    let tk = "]";
-    assert_token_positions!(tk, Ok(Token::BracketClose), 0..1);
-
-    let tk = "word";
-    assert_token_positions!(tk, Ok(Token::Word), 0..4);
-
-    let tk = r"\t{}";
-    assert_token_positions!(tk, Ok(Token::CommandName), 0..2);
-
-    let tk = "\n";
-    assert_token_positions!(tk, Ok(Token::Newline), 0..1);
-
-    let tk = r"	";
-    assert_token_positions!(tk, Ok(Token::WhitespaceOrTab), 0..1);
-
-    let tk = r" ";
-    assert_token_positions!(tk, Ok(Token::WhitespaceOrTab), 0..1);
-
-    let tk = r".";
-    assert_token_positions!(tk, Ok(Token::Dot), 0..1);
-
-    let tk = r":";
-    assert_token_positions!(tk, Ok(Token::Colon), 0..1);
-
-    let tk = r",";
-    assert_token_positions!(tk, Ok(Token::Comma), 0..1);
-
-    let tk = r"\\";
-    assert_token_positions!(tk, Ok(Token::DoubleBackslash), 0..2);
-
-    let tk = r"/";
-    assert_token_positions!(tk, Ok(Token::ForwardSlash), 0..1);
-
-    let tk = r"_";
-    assert_token_positions!(tk, Ok(Token::Underscore), 0..1);
-
-    let tk = r"1";
-    assert_token_positions!(tk, Ok(Token::Number), 0..1);
-
-    let tk = r"\{";
-    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
-
-    let tk = r"\}";
-    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
-
-    let tk = r"\_";
-    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
-
-    let tk = r"\$";
-    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
-
-    let tk = r"\&";
-    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
-
-    let tk = r"\%";
-    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
-
-    let tk = r"\#";
-    assert_token_positions!(tk, Ok(Token::EscapedChar), 0..2);
+    for (tk_content, token_type, range) in test_cases {
+        assert_token_positions!(tk_content, Ok(token_type), range);
+    }
 }
 
 #[test]
