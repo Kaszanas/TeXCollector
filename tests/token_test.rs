@@ -24,8 +24,8 @@ macro_rules! assert_token_positions {
 
         for (pos, (token, span)) in positions.into_iter().zip(spanned_token) {
             assert_eq!(
-                pos,
                 span,
+                pos,
                 "Token {token:#?} was found, but expected at {pos:?}"
             );
         }
@@ -80,7 +80,7 @@ fn test_single_tokens() {
     assert_token_positions!(tk, Ok(Token::BracketOpen), 0..1);
 
     let tk = "]";
-    assert_token_positions!(tk, Ok(Token::BracketOpen), 0..1);
+    assert_token_positions!(tk, Ok(Token::BracketClose), 0..1);
 
     let tk = "word";
     assert_token_positions!(tk, Ok(Token::Word), 0..4);
@@ -88,9 +88,8 @@ fn test_single_tokens() {
     let tk = r"\t{}";
     assert_token_positions!(tk, Ok(Token::CommandName), 0..2);
 
-    let tk = r#"
-    "#;
-    assert_token_positions!(tk, Ok(Token::Newline), 0..2);
+    let tk = "\n";
+    assert_token_positions!(tk, Ok(Token::Newline), 0..1);
 
     let tk = r"	";
     assert_token_positions!(tk, Ok(Token::WhitespaceOrTab), 0..1);
