@@ -45,7 +45,7 @@ fn token_test_input_command() {
     assert_token_positions!(source, Ok(Token::WhitespaceOrTab), 19..20);
     assert_token_positions!(source, Ok(Token::BraceOpen), 6..7, 13..14, 26..27);
     assert_token_positions!(source, Ok(Token::BraceClose), 18..19, 31..32, 32..33);
-    assert_token_positions!(source, Ok(Token::CommandName(_)), 0..6, 7..13, 20..26);
+    assert_token_positions!(source, Ok(Token::CommandName), 0..6, 7..13, 20..26);
     assert_token_positions!(source, Ok(Token::Word), 14..18, 27..31);
 }
 
@@ -59,10 +59,9 @@ fn token_test_utf_8_word() {
 #[test]
 fn token_test_usepackage_command() {
     let source = r"\usepackage{arxiv}";
-    let command_name = String::from(r"\usepackage");
     assert_token_positions!(source, Ok(Token::BraceOpen), 11..12);
     assert_token_positions!(source, Ok(Token::BraceClose), 17..18);
-    assert_token_positions!(source, Ok(Token::CommandName(command_name)), 0..11);
+    assert_token_positions!(source, Ok(Token::CommandName), 0..11);
     assert_token_positions!(source, Ok(Token::Word), 12..17);
 }
 
@@ -77,7 +76,7 @@ fn test_single_tokens() {
         ("[", Token::BracketOpen, 0..1),
         ("]", Token::BracketClose, 0..1),
         ("word", Token::Word, 0..4),
-        (r"\t", Token::CommandName(command_name), 0..2),
+        (r"\t", Token::CommandName, 0..2),
         ("\n", Token::Newline, 0..1),
         (r"	", Token::WhitespaceOrTab, 0..1),
         (r" ", Token::WhitespaceOrTab, 0..1),

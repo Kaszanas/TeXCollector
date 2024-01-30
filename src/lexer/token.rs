@@ -1,7 +1,7 @@
 use logos::{Logos, Span};
 use strum_macros::EnumDiscriminants;
 
-#[derive(Clone, Debug, Logos, PartialEq, Eq, EnumDiscriminants, clap::ValueEnum)]
+#[derive(Clone, Debug, Logos, PartialEq, Eq, EnumDiscriminants)]
 pub enum Token {
     #[token("*")]
     Asterix,
