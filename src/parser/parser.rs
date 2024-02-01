@@ -1,5 +1,3 @@
-use std::path::Path;
-
 use logos::{Lexer, Logos};
 
 use crate::lexer::token::Token;
@@ -10,7 +8,6 @@ use crate::lexer::token::Token;
 // then a specific logic would be applied either by initializing a new parser to look deeper in case of
 // replace commands, or copy of a file and adjustment of the command contents would be performed.
 
-// TODO: Make this a ReplaceCommand, and CopyCommand. These can be a set of commands.
 enum Command {
     CopyCommand,
     ReplaceCommand,
@@ -36,33 +33,30 @@ impl Command {
 
 pub struct Parser<'a> {
     lexer: logos::Lexer<'a, Token>,
-    source: &'a str,
+    output: String,
 }
 
 impl<'a> Parser<'a> {
-    pub fn new(source: &'a str) -> Self {
+    pub fn new(input: &'a str, output: String) -> Self {
         Self {
-            lexer: Token::lexer(source),
-            source,
+            lexer: Token::lexer(input),
+            output,
         }
     }
 
-    pub fn parse(self) -> Result<(), String> {
+    pub fn parse(mut self) -> Result<(), String> {
         let mut lexer = self.lexer;
 
         // Iterate over tokens and match specific commands:
         while let Some(result) = lexer.next() {
             match result {
                 Ok(token) => {
-                    // Logic is only applied for commands:
+                    // Just copy content if it is not a command:
                     if token != Token::CommandName {
-                        // TODO: everything that is not a command name
-                        // needs to be copied to the output:
-                        todo!();
+                        self.output.push_str(lexer.slice());
                         continue;
                     }
-
-                    match_commands(&lexer, token)?;
+                    match_commands(&mut lexer, token)?;
                 }
                 Err(_) => {
                     return Err(format!(
@@ -77,11 +71,65 @@ impl<'a> Parser<'a> {
     }
 }
 
-fn match_commands(lexer: &Lexer<Token>, token: Token) -> Result<(), String> {
+// TODO: Add docstring
+fn match_commands(lexer: &mut Lexer<Token>, token: Token) -> Result<(), String> {
     // TODO: Define logic for different types of commands:
     match Command::from_slice(lexer.slice()) {
-        Command::ReplaceCommand => todo!(),
-        Command::CopyCommand => todo!(),
+        Command::ReplaceCommand => replace_content(lexer),
+        Command::CopyCommand => copy_file(lexer),
         Command::NoLogic => Ok(()),
     }
+}
+
+// TODO: Add Docstring:
+fn copy_file(lexer: &mut Lexer<Token>) -> Result<(), String> {
+    // TODO: Find the opening brace
+    get_command_content(lexer)?;
+    // TODO: Get content up until the closing brace
+
+    Ok(())
+}
+
+// TODO: Add Docstring
+fn replace_content(lexer: &mut Lexer<Token>) -> Result<(), String> {
+    // TODO: Find the opening brace
+    get_command_content(lexer)?;
+
+    // TODO: Get content up until the closing brace
+
+    Ok(())
+}
+
+// TODO: Add docstring:
+fn get_command_content(lexer: &mut Lexer<Token>) -> Result<String, String> {
+    let mut content = String::new();
+    let mut record = false;
+
+    // REVIEW: This seems like a little too convoluted logic?
+    // Maybe it would be better to use an if statment instead of match token?
+    while let Some(result) = lexer.next() {
+        match result {
+            Ok(token) => match token {
+                Token::BraceOpen => {
+                    record = true;
+                }
+                Token::BraceClose => {
+                    return Ok(content);
+                }
+                _ => {
+                    if record {
+                        content.push_str(lexer.slice())
+                    }
+                }
+            },
+            Err(_) => {
+                return Err(format!(
+                    "Unrecognized Token! Add support for: {}",
+                    lexer.slice()
+                ))
+            }
+        }
+    }
+
+    Err("Could not obtain the command content!".to_owned())
 }
