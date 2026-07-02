@@ -13,11 +13,4 @@ pub struct CLIArguments {
     /// Output path where the final collected .tex file will be placed.
     #[arg(short, long)]
     pub output_path: PathBuf,
-
-    /// Files can either be copied to the output directory
-    /// and the paths in the command will be adjusted,
-    /// or their contents can be replaced in-place where applicable
-    /// [default: false].
-    #[arg(short, long, default_value_t = false)]
-    pub replace_input: bool,
 }
