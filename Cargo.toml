@@ -2,10 +2,15 @@
 name = "texcollector"
 version = "0.1.0"
 edition = "2021"
+description = "Collects a validated LaTeX article into a self-contained, submission-ready bundle"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/Kaszanas/TeXCollector"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = {version = "4.3.22", features=["derive"]}
-simple_logger = "4.2.0"
-log = "0.4.19"
+anyhow = "1.0.103"
+clap = { version = "4.6.1", features = ["derive"] }
+regex = "1.12.4"
+simple_logger = "5.2.0"
+log = "0.4.33"
