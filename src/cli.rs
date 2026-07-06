@@ -36,5 +36,5 @@ pub struct CLIArguments {
         default_value = "collected.tex",
         help = "Optional name for the output .tex file. If not provided, the default name will be used."
     )]
-    pub output_file_name: Option<String>,
+    pub output_file_name: String,
 }
