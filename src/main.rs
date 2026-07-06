@@ -57,12 +57,12 @@ fn resolve_paths(input_path: &Path, output_path: &Path) -> Result<ResolvedPaths>
 fn main() -> Result<()> {
     SimpleLogger::new().init().unwrap();
 
-    log::info!("Initialized the program!");
-
     let args = cli::CLIArguments::parse();
     let output_path = args.output_path;
 
-    let resolved = resolve_paths(&args.main_file, &output_path)?;
+    log::info!("Initialized the program!");
+
+    let resolved = resolve_paths(&args.input_file, &output_path)?;
 
     log::info!(
         "Set LaTeX main file to: {}",
