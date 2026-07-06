@@ -1,0 +1,94 @@
+\documentclass{article}
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[breaklinks,backref=page,hidelinks]{hyperref}
+
+
+\renewcommand*{\backreflastsep}{, }
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{microtype}      % microtypography
+\usepackage{graphicx}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{doi}
+\usepackage{authblk}
+
+\usepackage{cleveref}
+
+% Footnotes in tables:
+\usepackage[flushleft]{threeparttable}
+
+
+\title{\input{../title.tex} \input{../title.tex}}
+
+\date{July 28, 2022}	% Date
+
+\makeatletter
+\newcommand\email[2][]%
+   {\newaffiltrue\let\AB@blk@and\AB@pand
+      \if\relax#1\relax\def\AB@note{\AB@thenote}\else\def\AB@note{\relax}%
+        \setcounter{Maxaffil}{0}\fi
+      \begingroup
+        \let\protect\@unexpandable@protect
+        \def\thanks{\protect\thanks}\def\footnote{\protect\footnote}%
+        \@temptokena=\expandafter{\AB@authors}%
+        {\def\\{\protect\\\protect\Affilfont}\xdef\AB@temp{#2}}%
+         \xdef\AB@authors{\the\@temptokena\AB@las\AB@au@str
+         \protect\\[\affilsep]\protect\Affilfont\AB@temp}%
+         \gdef\AB@las{}\gdef\AB@au@str{}%
+        {\def\\{, \ignorespaces}\xdef\AB@temp{#2}}%
+        \@temptokena=\expandafter{\AB@affillist}%
+        \xdef\AB@affillist{\the\@temptokena \AB@affilsep
+          \AB@affilnote{}\protect\Affilfont\AB@temp}%
+      \endgroup
+       \let\AB@affilsep\AB@affilsepx
+}
+\makeatother
+
+
+\author[1]{\textbf{Kaszanas}\textsuperscript{*,}} 
+\affil[1]{Some Institution}
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+
+  \input{../0_abstract.tex}
+
+\end{abstract}
+
+% keywords can be removed
+\keywords{key0 \and key1\and key2}
+
+% Two commands in one line:
+\input{../1_introduction.tex} \input{../2_sample_content.tex}
+
+
+\input{
+  ../0_abstract.tex
+}
+
+\input % { siemano.txt }
+{ ../1_introduction.tex  }
+
+% \input{ siemano.txt }
+\input % { siemano.txt }
+{ ../0_abstract.tex }
+
+\input{ %  siemano.txt }
+  ../0_abstract.tex }
+
+SomeOtherContent\\abc\\def
+
+\includegraphics{../figures/picture.png}
+
+\bibliographystyle{IEEEtran}
+\bibliography{../sources.bib}
+
+\end{document}
