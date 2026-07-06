@@ -20,7 +20,9 @@ compose_build_test:
 compose_run_dev_it:
 	docker-compose -f $(TEST_COMPOSE) run -it --rm
 
-compose_run_dev: compose_build_dev compose_run_dev_it
+compose_run_dev:
+	compose_build_dev
+	compose_run_dev_it
 
 action_compose_test: ## Runs the tests in a container.
 	docker-compose -f $(TEST_COMPOSE) run --rm test
