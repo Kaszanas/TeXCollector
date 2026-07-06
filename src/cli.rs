@@ -7,8 +7,8 @@ use clap::Parser;
 #[command(
     author = "Andrzej 'Kaszanas' Białecki",
     version,
-    about = "TeXCollector helps you with bigger LaTeX projects spanning multiple files.",
-    long_about = "texcollector inlines inputs, copies figures, .sty and .bib files, and emits a single submission-ready .tex."
+    about = "TeXCollector helps you with bigger LaTeX projects spanning multiple files. Assumes existing latexpand installation.",
+    long_about = "TeXCollector helps you with bigger LaTeX projects spanning multiple files. Assumes existing latexpand installation. TeXCollector inlines inputs, copies figures, .sty and .bib files, and emits a single submission-ready .tex."
 )]
 pub struct CLIArguments {
     /// Path to the .tex file that will be collected.
